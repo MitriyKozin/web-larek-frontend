@@ -109,9 +109,9 @@ class Api {
     protected options: RequestInit;
 
     constructor(baseUrl: string, options: RequestInit = {}) {
-        this.baseUrl = baseUrl;
-        this.options = options;
-        };
+       this.baseUrl = baseUrl;
+       this.options = options;
+       };
     }
 ```
 Содержит в себе базовую логику отправки запросов. В конструктор передеётся базовый адрес сервера и опциональный объект с заголовками запросов.
