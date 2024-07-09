@@ -45,50 +45,50 @@ yarn build
 * ##### Карточка товара
 
 ```
-export interface ICardProduct {
-    id: string;
-    description: string;
-    image: string;
-    title: string;
-    category: string;
-    price: null | number;
+interface IProduct {  
+  _id: string;
+  description: string;
+  image: string;
+  title: string;
+  category: string;
+  price: null | number;
 }
 ```
 
 * ##### Интерфейс для модели данных карточек
 
 ```
-export interface ICardsData {
-    cards: ICardProduct[];
-    preview: string | null;
+interface ICardsData { 
+	cards: IProduct[];
+	preview: string | null;
 }
 
 ```
 * ##### Данные карточки, используемые в форме при создани новой карточки
 
 ```
-export type ICardInfo = Pick<Card, 'title' | 'description' | 'category' | 'image'>;
+type TCardInfo = Pick<IProduct, 'title' | 'description' | 'category' | 'image'>;
 ```
 
 * ##### Данные карточки, используемые при добавлении товара в корзину
 
 ```
-export type IBasket = Pick<Product, 'serialNumber' | 'title' | 'price'>;
+type IBasket = Pick<IProduct, 'title' | 'price'>;
 
 ```
 
 * ##### Форма ввода данных: адреса и выбор способа доставки 
 
 ```
-export interface IOrder {
-    paymentMethod: string;
-    deliveryAddress: string;
+interface IOrder {   
+    payment: string;
+    adress: string;
 }
 ```
 
 * ##### Форма ввода данных: email и номера телефона
 ```
-export interface IBuerContacts {
+interface IBuerContacts { 
     email: string;
     phone: string;
 }
@@ -132,8 +132,8 @@ class Api {
 Класс отвечает за хранение и логику работы с данными карточек созданных пользователями.\
 Конструктор класса принимает инстант брокера событий\
 В полях класса хранятся следующие данные:
-- `_productCards: ICardProduct[]` - массив объектов карточек
-- `_viewProduct: string | null` - id карточки, выбранной для просмотра в модальной окне
+- `_cards: IProduct[]` - массив объектов карточек
+- `_preview: string | null` - id карточки, выбранной для просмотра в модальной окне
 - `events: IEvents` - экземпляр класса `EventEmitter` для инициации событий при изменении данных.
 
 Так же класс предоставляет набор методов для взаимодействия с этими данными.
@@ -145,6 +145,12 @@ class Api {
 
 ### Классы представления
 - В каждом классе представления есть логика управления `DOM`-элементами (переключение `css`-селекторов, активация/деактивация кнопок, установка текстовых данных и тд). Это значит, что у них должен быть базовый класс `Component` (или `View`), в котором как раз будут все методы управления `DOM`-элементом.
+
+#### Класс Component
+Представляет собой базоыве поля и методы, необходимые для отрисовки компонентов на странице.
+```
+
+```
 
 #### Класс Modal
 Реализует модальное окно. Так же предоставляет методы `open` и `close` для управления отображением модального окна. Устанавливает слушатели на клавиатуру, для закрытия модального окна по Esc, на клик в оверлей и кнопку-крестик для закрытия попапа.  
@@ -238,21 +244,23 @@ class Api {
 
 
 - `products:changed` - изменение массива карточек
-
 - `product:selected` - при клике на карточку товара открывается модальное окно с подробной информацией о товаре так же появляется кнопка для возмодности добавления товара в корзину.
 
 - `basket:toggleItem` - при клике на кнопку 'добавить в корзину' внутри модального окна просмотра подробной информации о товаре, происходит добавление товара в корзину 
 - `basket:open` - модальное окно со списком добавленных карточек 
 - `basket:deliteItem` - удаление товара из корзины 
 - `basket:order` - перейти к оформлению заказа из модального окна 'корзины'
+
 - `payment:change` - выбор способа оплаты
 - `address:input` - ввод адреса доставки товара
 - `order:validation` - уведомление с ошибкой валидности данных формы с вводом способо оплаты и адреса.
 - `order:submit` - отправка данных для оплаты и доставки
+
 - `contacts:open` - модалное окно для ввода контактных данных
 - `email:input` - ввод адреса почты
 - `phone:input` - ввод номера телефона
 - `contacts:validation` - уведомление с ошибкой валидности данных формы с вводом электронной почты и номера телефона.
 - `contasts;submit` - подтвержние контактных данных
+
 - `order:complete` - информационое окно с уведомлением успешным оформлением товара
 

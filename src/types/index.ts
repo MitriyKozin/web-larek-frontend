@@ -1,37 +1,59 @@
-// Переменная хранящая типы данных
-export interface ICardProduct {
-    id: string;
-    description: string;
-    image: string;
-    title: string;
-    category: string;
-    price: null | number;
+
+export interface IProduct {  
+  id: string;
+  description: string;
+  image: string;
+  title: string;
+  category: string;
+  price: null | number;
 }
 
-export interface ICardsData {
-    productCards: ICardProduct[];
-    viewProduct: string | null;
-    getCard(cardId: string): ICardProduct;
-
-    checkValidation(data: Record<keyof TOrderInfo, string>):boolean; //TCardInfo
-    checkValidation(data: Record<keyof TBuerContactsInfo, string>):boolean; //TCardInfo
-
+export interface IProductsData { 
+	products: IProduct[];
+	preview: string | null;
+  // getCard(productId: string): IProduct;
 }
 
-export interface IOrder {
-    paymentMethod: string;
-    deliveryAddress: string;
-}
-
-export interface IBuerContacts {
+export interface IOrder {   
+    payment: string;
+    total: number;
+    address: string;
     email: string;
     phone: string;
 }
 
-export type TOrderInfo = Pick<Product, 'title' | 'price'>;
+// export interface IOrderForm {
+//   payment: string;
+//   address: string;
+//   email: string;
+//   phone: string;
+// }
 
-export type TBuerContactsInfo = Pick<Product, 'email' | 'email'>;
+export interface IOrderData {
+  checkValidation(data: Record<keyof IOrder, string>):boolean; 
+}
 
-export type TBasket = Pick<Product, 'serialNumber' | 'title' | 'price'>;
+export interface IBuerContactsData {
+  checkValidation(data: Record<keyof IBuerContacts, string>):boolean;
+}
 
-export type TCardInfo = Pick<Card, 'title' | 'description' | 'category' | 'image'>;
+export interface IBuerContacts { 
+    email: string;
+    phone: string;
+}
+
+export type TProductInfo = Pick<IProduct, 'title'  | 'category' | 'image' | 'price' | 'description' >;
+
+// export type TBasket = Pick<IProduct, 'title' | 'price'>; // serialNumber
+
+export type TOrderData = Pick<IProduct, 'title' | 'price'>;
+
+// export type TBuerContactsData = Pick<IBuerContacts, 'phone' | 'email'>;
+
+export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE' ; 
+
+export interface IApi {
+    baseUrl: string;
+    get<T>(uri: string): Promise<T>;
+    post<T>(uri: string, data: object, method?: ApiPostMethods): Promise<T>;
+}
