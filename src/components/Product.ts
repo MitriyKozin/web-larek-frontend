@@ -75,6 +75,7 @@ export class Product extends Component<IProduct>{
         this.productTitle = this.container.querySelector('.card__title');
         this.productPrice = this.container.querySelector('.card__price');
         this.productCategory = this.container.querySelector('.card__category');
+        
         this.productImage.addEventListener('click', () =>
             this.events.emit('product:select', { product: this })
         );
@@ -82,20 +83,20 @@ export class Product extends Component<IProduct>{
    
     render(data?: Partial<IProduct>): HTMLElement;
     // render(productData: Partial<IProduct>): HTMLElement;
-
     render(productData: Partial<IProduct> | undefined) {   // getProduct
         
         if (!productData) return this.container;
-        // this.productCategory.textContent = productData.category;
-        // this.productPrice.textContent = `${productData.price}`;
-        // this.productImage.style.backgroundImage = `url(${productData.image})`;
-        // this.productTitle.textContent = productData.title;
+        this.productCategory.textContent = productData.category;
+        this.productPrice.textContent = `${productData.price}`;
+        this.productImage.style.backgroundImage = `url(${productData.image})`;
+        this.productTitle.textContent = productData.title;
         
-        this.category = productData.category;
-        this.price = `${productData.price}`;
-        this.image = `url(${productData.image})`;
-        this.title = productData.title;
-        this._id = productData.id;    
+        // this.category = productData.category;
+        // this.price = `${productData.price}`;
+        // this.image = `url(${productData.image})`;
+        // this.title = productData.title;
+        // this._id = productData._id;    
+       
         Object.assign(this);
         return(this.container);
   

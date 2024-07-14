@@ -1,26 +1,27 @@
-
-export interface IProduct {  
-  id: string;
+export interface IProduct {
+  _id: string;
   description: string;
   image: string;
   title: string;
   category: string;
   price: null | number;
+  total: number;
+  items: string;
 }
 
-export interface IProductsData { 
-	products: IProduct[];
-	preview: string | null;
-  // getCard(productId: string): IProduct;
+export interface IProductsData {
+  products: IProduct[];
+  preview: string | null;
 }
 
-export interface IOrder {   
-    payment: string;
-    total: number;
-    address: string;
-    email: string;
-    phone: string;
+export interface IOrder {
+  payment: string;
+  total: number;
+  address: string;
+  email: string;
+  phone: string;
 }
+
 
 // export interface IOrderForm {
 //   payment: string;
@@ -41,17 +42,13 @@ export interface IBuerContacts {
     email: string;
     phone: string;
 }
-
-export type TProductInfo = Pick<IProduct, 'title'  | 'category' | 'image' | 'price' | 'description' >;
+// export type TProductInfo = Pick<IProduct, 'title'  | 'category' | 'image' | 'price' | 'description' >;
 
 // export type TBasket = Pick<IProduct, 'title' | 'price'>; // serialNumber
 
-export type TOrderData = Pick<IProduct, 'title' | 'price'>;
-
 // export type TBuerContactsData = Pick<IBuerContacts, 'phone' | 'email'>;
-
+export type TOrderData = Pick<IProduct, 'title' | 'price'>;
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE' ; 
-
 export interface IApi {
     baseUrl: string;
     get<T>(uri: string): Promise<T>;

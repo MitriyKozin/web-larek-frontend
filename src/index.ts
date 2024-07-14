@@ -1,50 +1,65 @@
-
 import './scss/styles.scss';
-import { EventEmitter, IEvents } from './components/base/events';
+import { EventEmitter } from './components/base/events';
 import { ProductData } from './components/ProductsData';
 import { Api } from './components/base/api';
-import { IApi } from './types/index';
+import { IApi, IProduct } from './types/index';
 import { API_URL } from './utils/constants';
 import { AppApi } from './components/AppApi';
-import { testProducts } from './utils/tempConstants';
 import { Product } from './components/Product';
 import { ProductsContainer } from './components/ProductsConteiner';
 import { cloneTemplate } from './utils/utils';
-
-const events = new EventEmitter()
-
+import { testProducts } from './utils/tempConstants';
+const events = new EventEmitter();
 const baseApi: IApi = new Api(API_URL);
-const api = new AppApi(baseApi); 
-
-const productsData = new ProductData(events)
-
-const productsContainer = new ProductsContainer (
+const api = new AppApi(baseApi);
+const productsData = new ProductData(events);
+const productsContainer = new ProductsContainer(
 	document.querySelector('.gallery')
 );
-
-const productTemplate: HTMLTemplateElement = 
-document.querySelector('#card-catalog'); //  .card-catalog.card-preview .card-basket
-
+const productTemplate: HTMLTemplateElement =
+	document.querySelector('#card-catalog');
 events.onAll((event) => {
-    console.log(event.eventName, event.data)
-})
-
-Promise.all([api.getCards()]) //api.postOrder()
-	.then(([initialProducts]) => {  // orderInfo,
+	console.log(event.eventName, event.data);
+});
+api.getProducts()
+	.then((initialProducts) => {
 		productsData.products = initialProducts;
-        // console.log(productsData.products)
+		// productsData.setProduct(initialProducts);
+  	console.log(productsData.products);
+    events.emit('initialData:loaded');
 	})
 	.catch((err) => {
-		console.error(err);
-    });
+		console.error('Ошибка вывода карточек:', err);
+	});
 
-const product = new Product(cloneTemplate(productTemplate), events);
-const product1 = new Product(cloneTemplate(productTemplate), events);
-const productArray = [];
-productArray.push(product.render(testProducts[4]));
-productArray.push(product1.render(testProducts[7]));
 
-productsContainer.render({catalog:productArray})
 
-  
+// const product = new Product(cloneTemplate(productTemplate), events);
+// const product1 = new Product(cloneTemplate(productTemplate), events);
+// const productArrey = [];
+// productArrey.push(product.render(testProducts[3]));
+// productArrey.push(product1.render(testProducts[7]));
+// productsContainer.render({catalog: productArrey});
+
+
+events.on('initialData:loaded', () => {
+	const productCards = productsData.products.map((product) => {
+	  const productInstance = new Product(cloneTemplate(productTemplate), events);
+		return productInstance.render(product);
+  });
+	productsContainer.render({ catalog: productCards });
+});
+
+
+// events.on('initialData:loaded', () => {
+// 	const productCards = productsData.getProduct().map((product) => {
+// 	  const productInstance = new Product(cloneTemplate(productTemplate), events);
+// 		return productInstance.render(product);
+//   });
+// 	productsContainer.render({ catalog: productCards });
+// 	// productsContainer.render({ products });
+
+// });
+
+
 

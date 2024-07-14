@@ -4,16 +4,17 @@ import { IEvents } from "./base/events";
 
 export class ProductData implements IProductsData {
 	productsData: IProduct;
-    protected _products: IProduct[]; // [] = [];
+    // protected _products: IProduct[];
+    protected _products: IProduct[];
     protected _preview: string | null = null;
     protected events: IEvents;
-
     constructor(events: IEvents) {
         this.events = events;
     }
-
-    set products(products: IProduct[]) {
-        this._products = products;
+// сюда нужно передвавать массив товаров, 
+// а не объект который присылает сервер.
+    set products(products: IProduct[]) { // set product
+        this._products = products;  
         this.events.emit('products:changed');
     }
 
@@ -21,37 +22,13 @@ export class ProductData implements IProductsData {
         return this._products;
     }
 
-    // addProduct(product: IProduct) {
-    //     this._products = [product, ...this._products];
-    //     this.events.emit('products:changed');
-    // }
-
-    // deleteProduct(productId: string, payload: Function | null = null) {
-    //     this._products = this._products.filter((product) => product.id !== productId);
-
-    //     if (payload) {
-    //         payload();
-    //     } else {
-    //         this.events.emit('products:changed');
-    //     }
-    // }
-
-    // updateProduct(product: IProduct, payload: Function | null = null) {
-    //     const foundProduct = this._products.find((item) => item.id === product.id);
-    //     if (!foundProduct) this.addProduct(product);
-
-    //     Object.assign(foundProduct, product);
-
-    //     if (payload) {
-    //         payload();
-    //     } else {
-    //         this.events.emit('products:changed');
-    //     }
-    // }
+    get items() {
+        return this._products.map((product) => product.items);
+      }
 
     getProduct(productId: string) {
-        return this._products.find((item) => item.id === productId);
-    }
+        return this._products.find((item) => item._id === productId);
+        }
 
     set preview(productId: string | null) {
         if (!productId) {

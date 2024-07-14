@@ -1,4 +1,4 @@
-import { IApi, IOrder, IProduct, TProductInfo, TOrderData } from '../types';
+import { IApi, IOrder, IProduct, TOrderData } from '../types';
 
 export class AppApi {
 	private _baseApi: IApi;
@@ -7,7 +7,7 @@ export class AppApi {
 		this._baseApi = baseApi;
 	}
 
-	getCards(): Promise<IProduct[]> {
+	getProducts(): Promise<IProduct[]> {
 		return this._baseApi.get<IProduct[]>(`/product`).then((product: IProduct[]) => product);
 	}
     // postOrder():
