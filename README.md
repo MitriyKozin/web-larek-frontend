@@ -33,64 +33,56 @@ yarn start
 ```
 npm run build
 ```
-
 или
-
 ```
 yarn build
 ```                                                               
 
 ## Данные и типы данных, используемые в приложении
 
-* ##### Карточка товара
+* ##### Интерфейс описывающий Карточку продукта
 
 ```
-interface IProduct {  
-  _id: string;
-  description: string;
-  image: string;
-  title: string;
-  category: string;
-  price: null | number;
+interface IProduct {
+	_id: string;
+	description: string;
+	image: string;
+	title: string;
+	category: string;
+	price: null | number;
+	selected: boolean;
 }
 ```
 
-* ##### Интерфейс для модели данных карточек
-
+* ##### Форма ввода данных: адреса и выбор способа доставки
 ```
-interface ICardsData { 
-	cards: IProduct[];
-	preview: string | null;
-}
-
-```
-* ##### Данные карточки, используемые в форме при создани новой карточки
-
-```
-type TCardInfo = Pick<IProduct, 'title' | 'description' | 'category' | 'image'>;
-```
-
-* ##### Данные карточки, используемые при добавлении товара в корзину
-
-```
-type IBasket = Pick<IProduct, 'title' | 'price'>;
-
-```
-
-* ##### Форма ввода данных: адреса и выбор способа доставки 
-
-```
-interface IOrder {   
-    payment: string;
-    adress: string;
+interface IOrder {
+	payment: string;
+	total: number;
+	address: string;
+	email: string;
+	phone: string;
+	items: string[];
 }
 ```
 
-* ##### Форма ввода данных: email и номера телефона
+* #####  Форма ввода данных: email и номера телефона
 ```
-interface IBuerContacts { 
-    email: string;
-    phone: string;
+interface IOrderForm {
+	payment: string;
+	address: string;
+	email: string;
+	phone: string;
+}
+```
+
+* ##### Интерфейс описывающий внутренне состояние приложения
+```
+interface IAppState {
+    basket: Product[];
+    store: Product[];
+	order: IOrder;
+	formErrors: FormErrors;
 }
 ```
 
@@ -132,15 +124,12 @@ class Api {
 Класс отвечает за хранение и логику работы с данными карточек созданных пользователями.\
 Конструктор класса принимает инстант брокера событий\
 В полях класса хранятся следующие данные:
-- `_cards: IProduct[]` - массив объектов карточек
+- `_products: IProduct[]` - массив объектов карточек
 - `_preview: string | null` - id карточки, выбранной для просмотра в модальной окне
 - `events: IEvents` - экземпляр класса `EventEmitter` для инициации событий при изменении данных.
 
 Так же класс предоставляет набор методов для взаимодействия с этими данными.
-- `getCard(cardId: string): ICard` - возвращает карточку по ее id
-- `checkValidation(data: Record<keyof TOrderInfo, string>):boolean;`
-- `checkValidation(data: Record<keyof TBuerContactsInfo, string>):boolean;`
- boolean - проверяет объект с данными карточки на валидность
+- `getProduct(cardId: string): ICard` - возвращает карточку по ее id
 - а так-же сеттеры и геттеры для сохранения и получения данных из полей класса
 
 ### Классы представления
@@ -149,7 +138,10 @@ class Api {
 #### Класс Component
 Представляет собой базоыве поля и методы, необходимые для отрисовки компонентов на странице.
 ```
+abstract class Component<T> {
+	constructor(protected readonly container: HTMLElement) {}
 
+}
 ```
 
 #### Класс Modal
@@ -172,7 +164,7 @@ class Api {
 
 Методы:
 - `getProductList()` - вывoд списка товаров
-- `deliteCardProduct()` - удаляет товар из корзины
+- `deliteProduct()` - удаляет товар из корзины
 - `getTotal()` - выводит общую стоимость товаров в корзине
 
 #### Класс ModalWithOrder
@@ -242,25 +234,26 @@ class Api {
 Взаимодействие осуществляется за счет событий генерируемых с помощью брокера событий и обработчиков этих событий, описанных в `index.ts`\
 В `index.ts` сначала создаются экземпляры всех необходимых классов, а затем настраивается обработка событий.
 
-
-- `products:changed` - изменение массива карточек
+- `product:toBasket` - добавление товара в корзину
 - `product:selected` - при клике на карточку товара открывается модальное окно с подробной информацией о товаре так же появляется кнопка для возмодности добавления товара в корзину.
-
+- `items:changed` - изменились элементы каталога
 - `basket:toggleItem` - при клике на кнопку 'добавить в корзину' внутри модального окна просмотра подробной информации о товаре, происходит добавление товара в корзину 
 - `basket:open` - модальное окно со списком добавленных карточек 
-- `basket:deliteItem` - удаление товара из корзины 
+- `basket:delite` - удаление товара из корзины 
 - `basket:order` - перейти к оформлению заказа из модального окна 'корзины'
 
 - `payment:change` - выбор способа оплаты
 - `address:input` - ввод адреса доставки товара
 - `order:validation` - уведомление с ошибкой валидности данных формы с вводом способо оплаты и адреса.
 - `order:submit` - отправка данных для оплаты и доставки
-
+- `orderFormErrors:change` - изменилось состояние валидации заказа
+- `contactsFormErrors:change` - изменилось состояние валидации контактов
+- `orderInput:change` - изменились введенные данные
 - `contacts:open` - модалное окно для ввода контактных данных
 - `email:input` - ввод адреса почты
 - `phone:input` - ввод номера телефона
 - `contacts:validation` - уведомление с ошибкой валидности данных формы с вводом электронной почты и номера телефона.
 - `contasts:submit` - подтвержние контактных данных
-
-- `order:complete` - информационое окно с уведомлением успешным оформлением товара
+- `order:success` - информационое окно с уведомлением успешным оформлением товара
+- `modal:close` - закрытие модального окна
 
