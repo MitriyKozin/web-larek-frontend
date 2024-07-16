@@ -33,15 +33,13 @@ export class Order extends Form<IOrder> {
 
 		if (this._cash) {
 			this._cash.addEventListener('click', () => {
-				this._cash.classList.add('button_alt-active');
-				this._card.classList.remove('button_alt-active');
+				this.toggleCash();
 				this.onInputChange('payment', 'cash');
 			});
 		}
 		if (this._card) {
 			this._card.addEventListener('click', () => {
-				this._card.classList.add('button_alt-active');
-				this._cash.classList.remove('button_alt-active');
+				this.toggleCard();
 				this.onInputChange('payment', 'card');
 			});
 		}
@@ -52,4 +50,13 @@ export class Order extends Form<IOrder> {
 		this._cash.classList.remove('button_alt-active');
 		this._card.classList.remove('button_alt-active');
 	}
+
+	private toggleCard() {
+		this.toggleClass(this._card, 'button_alt-active');
+	  }
+	
+	  private toggleCash() {
+		this.toggleClass(this._cash, 'button_alt-active');
+	  }
 }
+

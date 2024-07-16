@@ -44,6 +44,7 @@ export class Basket extends Component<IBasket> {
 	// Сеттер для общей цены
 	set price(price: number) {
 		this._price.textContent = handlePrice(price) + ' синапсов';
+		// this.setText(this._price, handlePrice(price) + ' синапсов');
 	}
 
 	// Сеттер для списка товаров
@@ -114,4 +115,8 @@ export class StoreItemBasket extends Component<IProductBasket> {
 	set price(value: number) {
 		this._price.textContent = handlePrice(value) + ' синапсов';
 	}
+}
+
+function setDisable(_button: HTMLButtonElement, arg1: boolean) {
+	throw new Error('Function not implemented.');
 }

@@ -57,7 +57,7 @@ api.get('/product')
 events.on('items:changed', () => {
 	page.store = appData.store.map((item) => {
 	  const product = new StoreItem(cloneTemplate(storeProductTemplate), {
-		onClick: () => events.emit('product:select', item),
+		onClick: () => events.emit('card:select', item),
 	  });
 	  return product.render({
 		id: item.id,
@@ -70,7 +70,7 @@ events.on('items:changed', () => {
   });
   
  // Открытие карточки
-events.on('product:select', (item: Product) => {
+events.on('card:select', (item: Product) => {
 	page.locked = true;
 	const product = new StoreItemPreview(cloneTemplate(cardPreviewTemplate), {
 	  onClick: () => {
@@ -103,7 +103,7 @@ events.on('product:select', (item: Product) => {
 	page.locked = true
 	const basketItems = appData.basket.map((item, index) => {
 	  const storeItem = new StoreItemBasket(
-		'product',
+		'card',
 		cloneTemplate(cardBasketTemplate),
 		{
 		  onClick: () => events.emit('basket:delete', item)
