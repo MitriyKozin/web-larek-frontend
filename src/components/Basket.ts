@@ -43,29 +43,26 @@ export class Basket extends Component<IBasket> {
 
 	// Сеттер для общей цены
 	set price(price: number) {
-		this._price.textContent = handlePrice(price) + ' синапсов';
-		// this.setText(this._price, handlePrice(price) + ' синапсов');
+    	this.setText(this._price, handlePrice(price) + ' синапсов');
 	}
 
 	// Сеттер для списка товаров
 	set list(items: HTMLElement[]) {
 		this._list.replaceChildren(...items);
-		this._button.disabled = items.length ? false : true;
+		this.setDisabled(this._button, items.length === 0);
 	}
 
 	// Метод отключающий кнопку "Оформить"
 	disableButton() {
-		this._button.disabled = true;
+		this.setDisabled(this._button, true);
 	}
 
 	// Метод для обновления индексов таблички при удалении товара из корзины
 	refreshIndices() {
-		Array.from(this._list.children).forEach(
-			(item, index) =>
-				(item.querySelector(`.basket__item-index`)!.textContent = (
-					index + 1
-				).toString())
-		);
+		Array.from(this._list.children).forEach((item, index) => { 
+			const storeItem = item as unknown as StoreItemBasket; 
+			storeItem.index = index + 1; 
+		}); 
 	}
 }
 
@@ -117,6 +114,3 @@ export class StoreItemBasket extends Component<IProductBasket> {
 	}
 }
 
-function setDisable(_button: HTMLButtonElement, arg1: boolean) {
-	throw new Error('Function not implemented.');
-}

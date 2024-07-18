@@ -9,8 +9,8 @@ import { ApiResponse, IOrderForm, IProduct } from './types';
 import { API_URL } from './utils/constants';
 import './scss/styles.scss';
 import { Basket, StoreItemBasket } from './components/Basket';
-import { Order } from './components/Order';
-import { Contacts } from './components/Contacts';
+import { OrderForm } from './components/Order';
+import { ContactsForm } from './components/Contacts';
 import { Success } from './components/Success';
 
 const api = new Api(API_URL);
@@ -36,11 +36,11 @@ const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 
 // Переиспользуемые компоненты
 const basket = new Basket('basket', cloneTemplate(basketTemplate), events);
-const order = new Order('order', cloneTemplate(orderTemplate), events)
-const contacts = new Contacts(cloneTemplate(contactsTemplate), events);
+const order = new OrderForm('order', cloneTemplate(orderTemplate), events)
+const contacts = new ContactsForm(cloneTemplate(contactsTemplate), events);
 const success = new Success('order-success', cloneTemplate(successTemplate), {
   onClick: () => {
-    events.emit('modal:close')
+    // events.emit('modal:close')
     modal.close()
   }
 })
@@ -163,10 +163,19 @@ events.on('card:select', (item: Product) => {
   });
   
   // Изменились введенные данные
-  events.on('orderInput:change', (data: { field: keyof IOrderForm, value: string }) => {
-	appData.setOrderField(data.field, data.value);
-  });
-  
+  events.on(
+    /^order\..*:change/, (data: { field: keyof IOrderForm; value: string }) => {
+	    appData.setOrderField(data.field, data.value);
+    }
+);
+
+// Изменение полей контактов
+events.on(
+    /^contacts\..*:change/,
+    (data: { field: keyof IOrderForm; value: string }) => {
+        appData.setOrderField(data.field, data.value);
+    }
+); 
   // Заполнить телефон и почту
   events.on('order:submit', () => {
 	appData.order.total = appData.getTotalBasketPrice()

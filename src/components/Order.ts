@@ -15,7 +15,7 @@ export interface IOrder {
 /*
  * Класс, описывающий окошко заказа товара
  * */
-export class Order extends Form<IOrder> {
+export class OrderForm extends Form<IOrder> {
 	// Сссылки на внутренние элементы
 	protected _card: HTMLButtonElement;
 	protected _cash: HTMLButtonElement;

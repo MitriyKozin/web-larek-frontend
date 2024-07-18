@@ -15,9 +15,22 @@ export interface IContacts {
 /*
  * Класс, описывающий окошко контакты
  * */
-export class Contacts extends Form<IContacts> {
+export class ContactsForm extends Form<IContacts> {
+	private inputPhone: HTMLInputElement;
+    private inputEmail: HTMLInputElement;
+
 	// Конструктор принимает родительский элемент и обработчик событий
 	constructor(container: HTMLFormElement, events: IEvents) {
 		super(container, events);
+	}
+	
+    setPhone(phone: string) {
+        // Ваша логика для установки телефона
+		this.inputPhone.value = phone
+    }
+
+    setEmail(email: string) {
+        // Ваша логика для установки электронной почты
+		this.inputEmail.value = email;
 	}
 }
