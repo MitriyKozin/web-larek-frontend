@@ -51,11 +51,11 @@ export class OrderForm extends Form<IOrder> {
 		this.toggleClass(this._card, 'button_alt-active', false);
 	}
 
-	toggleCard(state: boolean = true) {
+	private toggleCard(state: boolean = true) {
         this.toggleClass(this._card, 'button_alt-active', state);
     }
 
-    toggleCash(state: boolean = true) {
+    private toggleCash(state: boolean = true) {
         this.toggleClass(this._cash, 'button_alt-active', state);
     } 
 }

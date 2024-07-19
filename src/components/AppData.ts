@@ -65,10 +65,14 @@ export class AppState extends Model<IAppState> {
 
 	validateContacts() {
 		const errors: typeof this.formErrors = {};
-		if (!this.order.email) {
+
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	    const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+
+		if (!this.order.email || !emailRegex.test(this.order.email)) {
 			errors.email = 'Необходимо указать email';
 		}
-		if (!this.order.phone) {
+		if (!this.order.phone || !phoneRegex.test(this.order.phone)) {
 			errors.phone = 'Необходимо указать телефон';
 		}
 		this.formErrors = errors;

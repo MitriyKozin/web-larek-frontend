@@ -57,13 +57,7 @@ export class Basket extends Component<IBasket> {
 	disableButton() {
 		this.setDisabled(this._button, true);
 	}
-	// Публичный метод для обновления индексов
-//     updateIndices() {
-//         Array.from(this._list.children).forEach((item, index) => {
-//         (item.querySelector(`.basket__item-index`)!.textContent = (index + 1).toString());
-//     });
-//   }
-
+	
 // Сделаю публичный метод для получения списка элементов по другому не выйдет.
 getList(): HTMLElement {
     return this._list;
