@@ -47,16 +47,16 @@ export class OrderForm extends Form<IOrder> {
 
 	// Метод, отключающий подсвечивание кнопок
 	disableButtons() {
-		this._cash.classList.remove('button_alt-active');
-		this._card.classList.remove('button_alt-active');
+		this.toggleClass(this._cash, 'button_alt-active', false);
+		this.toggleClass(this._card, 'button_alt-active', false);
 	}
 
-	private toggleCard() {
-		this.toggleClass(this._card, 'button_alt-active');
-	  }
-	
-	  private toggleCash() {
-		this.toggleClass(this._cash, 'button_alt-active');
-	  }
+	toggleCard(state: boolean = true) {
+        this.toggleClass(this._card, 'button_alt-active', state);
+    }
+
+    toggleCash(state: boolean = true) {
+        this.toggleClass(this._cash, 'button_alt-active', state);
+    } 
 }
 

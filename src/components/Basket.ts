@@ -2,6 +2,7 @@ import { IProduct } from '../types';
 import { handlePrice } from '../utils/utils';
 import { Component } from './base/Component';
 import { IEvents } from './base/events';
+// import { refreshIndices } from '../index';
 
 /*
  * Интерфейс, описывающий корзину товаров
@@ -18,7 +19,7 @@ export interface IBasket {
  * */
 export class Basket extends Component<IBasket> {
 	// Ссылки на внутренние элементы
-	protected _list: HTMLElement;
+	protected _list: HTMLElement; // protected
 	protected _price: HTMLElement;
 	protected _button: HTMLButtonElement;
 
@@ -56,14 +57,17 @@ export class Basket extends Component<IBasket> {
 	disableButton() {
 		this.setDisabled(this._button, true);
 	}
+	// Публичный метод для обновления индексов
+//     updateIndices() {
+//         Array.from(this._list.children).forEach((item, index) => {
+//         (item.querySelector(`.basket__item-index`)!.textContent = (index + 1).toString());
+//     });
+//   }
 
-	// Метод для обновления индексов таблички при удалении товара из корзины
-	refreshIndices() {
-		Array.from(this._list.children).forEach((item, index) => { 
-			const storeItem = item as unknown as StoreItemBasket; 
-			storeItem.index = index + 1; 
-		}); 
-	}
+// Сделаю публичный метод для получения списка элементов по другому не выйдет.
+getList(): HTMLElement {
+    return this._list;
+  }
 }
 
 export interface IProductBasket extends IProduct {
@@ -102,15 +106,15 @@ export class StoreItemBasket extends Component<IProductBasket> {
 	}
 
 	set title(value: string) {
-		this._title.textContent = value;
+		this.setText(this._title, value);
 	}
 
 	set index(value: number) {
-		this._index.textContent = value.toString();
+		this.setText(this._index, value.toString());
 	}
 
 	set price(value: number) {
-		this._price.textContent = handlePrice(value) + ' синапсов';
+		this.setText(this._price, handlePrice(value) + ' синапсов');
 	}
 }
 

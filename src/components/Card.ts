@@ -63,7 +63,7 @@ export class Product extends Component<IProduct> {
 
   // Сеттер и гетер для названия
   set title(value: string) {
-    this._title.textContent = value;
+    this.setText(this._title, value);
   }
   get title(): string {
     return this._title.textContent || '';
@@ -71,13 +71,13 @@ export class Product extends Component<IProduct> {
 
   // Сеттер для кратинки
   set image(value: string) {
-    this._image.src = CDN_URL + value;
+    this.setImage(this._image, CDN_URL + value);
   }
 
   // Сеттер для определения выбрали товар или нет
   set selected(value: boolean) {
     if (!this._button.disabled) {
-      this._button.disabled = value;
+      this.setDisabled(this._button, value); 
     }
   }
 
@@ -87,14 +87,15 @@ export class Product extends Component<IProduct> {
       ? handlePrice(value) + ' синапсов'
       : 'Бесценно';
     if (this._button && !value) {
-      this._button.disabled = true;
+      this.setDisabled(this._button, true);
     }
   }
 
   // Сеттер для категории
   set category(value: CategoryType) {
     this._category.textContent = value;
-    this._category.classList.add(categoryMapping[value]);
+    this.toggleClass(this._category, categoryMapping[value], true);
+
   }
 }
 
@@ -114,6 +115,6 @@ export class StoreItemPreview extends Product {
   }
 
   set description(value: string) {
-    this._description.textContent = value;
+    this.setText(this._description, value);
   }
 } 
