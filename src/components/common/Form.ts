@@ -30,8 +30,6 @@ export class Form<T> extends Component<IFormState> {
 		this.container.addEventListener('submit', (evt: Event) => {
 			evt.preventDefault();
 			this.events.emit(`${this.container.name}:submit`);
-			// Очистка полей формы
-     	    this.container.reset();
 		});
 	}
 

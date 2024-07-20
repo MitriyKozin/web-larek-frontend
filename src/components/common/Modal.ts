@@ -21,13 +21,8 @@ export class Modal extends Component<IModalData> {
 
 		this._closeButton.addEventListener('click', () => {
 			this.close();
-			// Очистка полей формы
-			const form = this.container.querySelector('form');
-			if (form) {
-				form.reset();
-			}
 		});
-		
+
 		this._closeButton.addEventListener('click', this.close.bind(this));
 		this.container.addEventListener('click', this.close.bind(this));
 		this._content.addEventListener('click', (event) => event.stopPropagation());
@@ -47,6 +42,11 @@ export class Modal extends Component<IModalData> {
 		this.toggleClass(this.container, 'modal_active', true); 
 		document.addEventListener('keydown', this._handleEscape);
 		this.events.emit('modal:open');
+			// Очистка полей формы
+			const form = this.container.querySelector('form');
+			if (form) {
+				form.reset();
+			}
 	}
 
 	close() {
