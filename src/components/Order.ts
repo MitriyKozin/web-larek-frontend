@@ -35,12 +35,14 @@ export class OrderForm extends Form<IOrder> {
 			this._cash.addEventListener('click', () => {
 				this.toggleCash();
 				this.onInputChange('payment', 'cash');
+				this.toggleCard(false);
 			});
 		}
 		if (this._card) {
 			this._card.addEventListener('click', () => {
 				this.toggleCard();
 				this.onInputChange('payment', 'card');
+				this.toggleCash(false);
 			});
 		}
 	}

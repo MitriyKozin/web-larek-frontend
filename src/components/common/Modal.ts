@@ -19,6 +19,15 @@ export class Modal extends Component<IModalData> {
 		);
 		this._content = ensureElement<HTMLElement>('.modal__content', container);
 
+		this._closeButton.addEventListener('click', () => {
+			this.close();
+			// Очистка полей формы
+			const form = this.container.querySelector('form');
+			if (form) {
+				form.reset();
+			}
+		});
+		
 		this._closeButton.addEventListener('click', this.close.bind(this));
 		this.container.addEventListener('click', this.close.bind(this));
 		this._content.addEventListener('click', (event) => event.stopPropagation());
