@@ -26,11 +26,11 @@ export class ContactsForm extends Form<IContacts> {
 	
     setPhone(phone: string) {
         // Ваша логика для установки телефона
-		this.inputPhone.value = phone
+		this.setText(this.inputPhone, phone);
     }
 
     setEmail(email: string) {
         // Ваша логика для установки электронной почты
-		this.inputEmail.value = email;
+		this.setText(this.inputEmail, email);
 	}
 }

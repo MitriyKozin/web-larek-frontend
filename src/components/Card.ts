@@ -83,9 +83,9 @@ export class Product extends Component<IProduct> {
 
   // Сеттер для цены
   set price(value: number | null) {
-    this._price.textContent = value
+    this.setText(this._price, value
       ? handlePrice(value) + ' синапсов'
-      : 'Бесценно';
+      : 'Бесценно');
     if (this._button && !value) {
       this.setDisabled(this._button, true);
     }
@@ -93,7 +93,7 @@ export class Product extends Component<IProduct> {
 
   // Сеттер для категории
   set category(value: CategoryType) {
-    this._category.textContent = value;
+    this.setText(this._category, value);
     this.toggleClass(this._category, categoryMapping[value], true);
 
   }
